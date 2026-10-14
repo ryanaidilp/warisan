@@ -1,1 +1,1 @@
-{ "scripts": { "test": "node --test-reporter=spec web/faraid.test.js", "start": "python3 -m http.server 5173 -d web" } }
+{ "scripts": { "test": "node web/faraid.test.js", "start": "python3 -m http.server 5173 -d web" } }
