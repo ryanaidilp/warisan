@@ -79,9 +79,10 @@ export function load(): Data {
     const s = JSON.parse(localStorage.getItem(STORE) ?? 'null');
     if (!s || !Array.isArray(s.people)) return blank();
     const str = (v: unknown, max: number) => String(v ?? '').slice(0, max);
+    const money = (v: unknown) => { const n = Math.min(Math.trunc(Number(v) || 0), 999_999_999_999_999); return n > 0 ? String(n) : ''; };
     return {
       deceased: { name: str(s.deceased?.name, 40), g: s.deceased?.g === 'f' ? 'f' : 'm', photo: okPhoto(s.deceased?.photo) ? s.deceased.photo : '' },
-      estate: str(s.estate, 20), debt: str(s.debt, 20), will: str(s.will, 20),
+      estate: money(s.estate), debt: money(s.debt), will: money(s.will),
       people: s.people.filter((p: Person) => p && p.rel in REL).map((p: Person): Person => ({
         id: str(p.id, 12).replace(/\W/g, '') || newId(), name: str(p.name, 40), rel: p.rel,
         g: p.g === 'f' ? 'f' : 'm', photo: okPhoto(p.photo) ? p.photo : '',

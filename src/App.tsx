@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Editor } from '@/components/Editor';
+import { MoneyInput } from '@/components/MoneyInput';
 import { Notices, ResultTable, Summary } from '@/components/Results';
 import { Tree } from '@/components/Tree';
 import { faraid } from '@/lib/faraid';
 import { blank, clear, heirsOf, load, newId, save, type Data, type Rel } from '@/lib/family';
 
 const num = (s: string) => Math.max(0, Number(s) || 0);
-const FIELDS = [['estate', 'Total harta (Rp)'], ['debt', 'Utang & biaya jenazah (Rp)'], ['will', 'Wasiat (Rp), maksimal 1/3 setelah utang']] as const;
+const FIELDS = [['estate', 'Total harta'], ['debt', 'Utang & biaya jenazah'], ['will', 'Wasiat (maksimal 1/3 setelah utang)']] as const;
 
 export default function App() {
   const [data, setData] = useState<Data>(load);
@@ -59,8 +59,8 @@ export default function App() {
             {FIELDS.map(([k, text]) => (
               <div key={k} className="space-y-1.5">
                 <Label htmlFor={k}>{text}</Label>
-                <Input id={k} type="number" inputMode="numeric" min={0} step="any" placeholder="0" className="min-h-11 tabular-nums"
-                  value={data[k]} onChange={(e) => setData((d) => ({ ...d, [k]: e.target.value }))} />
+                <MoneyInput id={k} placeholder="0" className="min-h-11 tabular-nums"
+                  value={data[k]} onChange={(v) => setData((d) => ({ ...d, [k]: v }))} />
               </div>
             ))}
           </CardContent>
