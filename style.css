@@ -8,7 +8,7 @@
   --accent-soft: oklch(93.5% 0.03 165);
   --brass: oklch(62% 0.11 78);
   --serif: 'Newsreader', Georgia, serif;
-  --sans: 'Instrument Sans', system-ui, sans-serif;
+  --sans: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
   color-scheme: light;
   accent-color: var(--accent);
   caret-color: var(--accent);
