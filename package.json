@@ -1,1 +1,1 @@
-{ "scripts": { "test": "node web/faraid.test.js", "start": "python3 -m http.server 5173 -d web" } }
+{ "type": "module", "scripts": { "test": "node faraid.test.js", "start": "python3 -m http.server 5173" } }
