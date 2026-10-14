@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hitung Waris — kalkulator faraid</title>
+<meta name="description" content="Kalkulator waris Islam (faraid). Susun pohon keluarga, lihat pembagian harta. Dihitung di browser, tanpa menyimpan data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23173b2e'/%3E%3Cpath d='M16 6v20M8 14h16M10 22h12' stroke='%23d9a441' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="intro">
+<main>
+  <header>
+    <h1>Hitung Waris</h1>
+    <p>Pembagian harta peninggalan menurut faraid (mazhab Syafi'i). Semua dihitung di browser Anda; tidak ada data yang dikirim.</p>
+  </header>
+
+  <div class="layout">
+    <form id="form" autocomplete="off" aria-label="Data keluarga">
+      <fieldset>
+        <legend>Pewaris</legend>
+        <div class="seg" role="radiogroup" aria-label="Jenis kelamin pewaris">
+          <label><input type="radio" name="gender" value="male" checked><span>Laki-laki</span></label>
+          <label><input type="radio" name="gender" value="female"><span>Perempuan</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Harta (Rp)</legend>
+        <label class="f">Total harta<input type="number" inputmode="numeric" min="0" step="any" id="estate" placeholder="0"></label>
+        <label class="f">Utang &amp; biaya jenazah<input type="number" inputmode="numeric" min="0" step="any" id="debt" placeholder="0"></label>
+        <label class="f">Wasiat <small>(maksimal 1/3 setelah utang)</small><input type="number" inputmode="numeric" min="0" step="any" id="will" placeholder="0"></label>
+      </fieldset>
+      <div id="heirs"></div>
+    </form>
+
+    <section id="out" aria-live="polite">
+      <div id="summary"></div>
+      <div id="notice"></div>
+      <div id="tree" aria-label="Pohon keluarga"></div>
+      <div id="result"></div>
+    </section>
+  </div>
+
+  <footer>
+    Alat bantu hitung, bukan fatwa. Cakupan: pasangan, orang tua, nenek, anak, cucu dari anak laki-laki, dan saudara.
+    Belum termasuk kakek, keponakan, paman, dan dzawil arham. Untuk keputusan resmi, tanyakan ulama atau Pengadilan Agama.
+  </footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
