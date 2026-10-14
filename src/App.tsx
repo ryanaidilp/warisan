@@ -30,9 +30,9 @@ export default function App() {
   const cap = (estate - debt) / 3, will = Math.min(num(data.will), cap);
   const money = { estate, debt, will, cap, net: estate - debt - will, willAsked: num(data.will) };
 
-  const add = (rel: Rel) => {
+  const add = (rel: Rel, parent?: string) => {
     const id = newId();
-    setData((d) => ({ ...d, people: [...d.people, { id, name: '', g: 'm', photo: '', rel }] }));
+    setData((d) => ({ ...d, people: [...d.people, { id, name: '', g: 'm', photo: '', rel, parent }] }));
     setFresh(id);
     setSel(id);
   };

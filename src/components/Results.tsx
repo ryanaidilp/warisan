@@ -2,7 +2,7 @@ import { Info } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { label, val, type Mode, type Result } from '@/lib/faraid';
-import { HEIR_NAME, keyOf, pct, rp, type Data } from '@/lib/family';
+import { HEIR_NAME, eligible, keyOf, pct, rp, type Data } from '@/lib/family';
 
 const NOTES: Record<NonNullable<Mode>, string> = {
   aul: "'Aul: jumlah bagian tetap melebihi harta, jadi semua bagian dikurangi secara sebanding.",
@@ -56,7 +56,7 @@ export function ResultTable({ data, r, net }: { data: Data; r: Result; net: numb
       </TableHeader>
       <TableBody>
         {r.rows.map((x) => {
-          const names = data.people.filter((p) => p.name && keyOf(p, dg) === x.key).map((p) => p.name).join(', ');
+          const names = data.people.filter((p) => p.name && eligible(p, data.people) && keyOf(p, dg) === x.key).map((p) => p.name).join(', ');
           const who = (
             <TableCell className="whitespace-normal align-top">
               <span className="font-medium">{HEIR_NAME[x.key]}{x.count > 1 && ` ×${x.count}`}</span>

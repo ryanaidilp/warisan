@@ -85,6 +85,21 @@ export function Editor({ data, sel, autoFocus, update, onClose, onDelete }: Prop
           </div>
         )}
 
+        {person?.rel === 'grandchild' && (() => {
+          const sons = data.people.filter((x) => x.rel === 'child' && x.g === 'm');
+          return (
+            <div className="space-y-1.5">
+              <Label htmlFor="parent">Orang tua (anak laki-laki)</Label>
+              {sons.length ? (
+                <Select value={person.parent ?? ''} onValueChange={(v) => patch({ parent: v })}>
+                  <SelectTrigger id="parent" className="w-full min-h-11"><SelectValue placeholder="Pilih orang tua" /></SelectTrigger>
+                  <SelectContent>{sons.map((x, i) => <SelectItem key={x.id} value={x.id}>{x.name || `Anak laki-laki ${i + 1}`}</SelectItem>)}</SelectContent>
+                </Select>
+              ) : <p className="text-sm text-muted-foreground">Tambahkan anak laki-laki dulu. Cucu hanya mewarisi lewat anak laki-laki.</p>}
+            </div>
+          );
+        })()}
+
         <div className="space-y-1.5">
           <Label id="g-label">Jenis kelamin</Label>
           <ToggleGroup type="single" variant="outline" spacing={0} className="w-full" aria-labelledby="g-label"

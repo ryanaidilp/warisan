@@ -3,7 +3,7 @@ import { val } from './faraid';
 
 export type Gender = 'm' | 'f';
 export type Rel = 'father' | 'mother' | 'gmP' | 'gmM' | 'full' | 'paternal' | 'maternal' | 'spouse' | 'child' | 'grandchild';
-export type Person = { id: string; name: string; g: Gender; photo: string; rel: Rel };
+export type Person = { id: string; name: string; g: Gender; photo: string; rel: Rel; parent?: string };
 export type Deceased = { name: string; g: Gender; photo: string };
 export type Data = { deceased: Deceased; estate: string; debt: string; will: string; people: Person[] };
 
@@ -45,9 +45,12 @@ export const keyOf = (p: Person, dg: Gender): HeirKey => {
   const k = KEY[p.rel];
   return typeof k === 'string' ? k : k[genderOf(p, dg) === 'm' ? 0 : 1];
 };
+// A grandchild only inherits through a son, so it needs a son as its parent.
+export const eligible = (p: Person, all: Person[]) =>
+  p.rel !== 'grandchild' || all.some((x) => x.id === p.parent && x.rel === 'child' && x.g === 'm');
 export const heirsOf = (d: Data): Heirs => {
   const h: Heirs = {};
-  for (const p of d.people) { const k = keyOf(p, d.deceased.g); h[k] = (h[k] ?? 0) + 1; }
+  for (const p of d.people.filter((x) => eligible(x, d.people))) { const k = keyOf(p, d.deceased.g); h[k] = (h[k] ?? 0) + 1; }
   return h;
 };
 
@@ -82,6 +85,7 @@ export function load(): Data {
       people: s.people.filter((p: Person) => p && p.rel in REL).map((p: Person): Person => ({
         id: str(p.id, 12).replace(/\W/g, '') || newId(), name: str(p.name, 40), rel: p.rel,
         g: p.g === 'f' ? 'f' : 'm', photo: okPhoto(p.photo) ? p.photo : '',
+        parent: str(p.parent, 12).replace(/\W/g, '') || undefined,
       })),
     };
   } catch { return blank(); }

@@ -1,7 +1,7 @@
 import { Plus, UserRound } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { fr, label, val, type Result } from '@/lib/faraid';
-import { HEIR_NAME, keyOf, okPhoto, pct, relLabel, relMax, rp, type Data, type Person, type Rel } from '@/lib/family';
+import { HEIR_NAME, eligible, keyOf, okPhoto, pct, relLabel, relMax, rp, type Data, type Person, type Rel } from '@/lib/family';
 import { cn } from '@/lib/utils';
 
 export function Face({ photo, className }: { photo: string; className?: string }) {
@@ -15,7 +15,7 @@ export function Face({ photo, className }: { photo: string; className?: string }
 
 type Props = {
   data: Data; result: Result; net: number; sel: string | null;
-  onSelect: (id: string) => void; onAdd: (rel: Rel) => void;
+  onSelect: (id: string) => void; onAdd: (rel: Rel, parent?: string) => void;
 };
 
 export function Tree({ data, result, net, sel, onSelect, onAdd }: Props) {
@@ -25,12 +25,14 @@ export function Tree({ data, result, net, sel, onSelect, onAdd }: Props) {
 
   const node = (p: Person) => {
     const key = keyOf(p, dg);
-    const row = by.get(key)!;
-    const per = row.frac ? fr(row.frac.n, row.frac.d * row.count) : null;
+    const linked = eligible(p, data.people);
+    const row = linked ? by.get(key) : undefined;
+    const per = row?.frac ? fr(row.frac.n, row.frac.d * row.count) : null;
+    const why = linked ? row?.blocked : 'Cucu hanya mewarisi lewat anak laki-laki. Pilih orang tuanya di editor.';
     return (
       <button
         key={p.id} type="button" data-sel={sel === p.id} data-blocked={!per} className="node"
-        aria-pressed={sel === p.id} title={row.blocked} onClick={() => onSelect(p.id)}
+        aria-pressed={sel === p.id} title={why} onClick={() => onSelect(p.id)}
       >
         <Face photo={p.photo} />
         <span className="font-medium leading-tight break-words">{p.name || HEIR_NAME[key]}</span>
@@ -42,14 +44,14 @@ export function Tree({ data, result, net, sel, onSelect, onAdd }: Props) {
             <span className="text-xs text-muted-foreground tabular-nums">{rp(val(per) * net)}</span>
           </>
         ) : (
-          <span className="text-sm text-muted-foreground mt-1">Terhalang</span>
+          <span className="text-sm text-muted-foreground mt-1">{linked ? 'Terhalang' : 'Belum terhubung'}</span>
         )}
       </button>
     );
   };
 
-  const slot = (rel: Rel, text = relLabel(rel, dg)) => (
-    <button key={`add-${rel}`} type="button" className="slot" aria-label={`Tambah ${relLabel(rel, dg)}`} onClick={() => onAdd(rel)}>
+  const slot = (rel: Rel, text = relLabel(rel, dg), parent?: string) => (
+    <button key={`add-${rel}`} type="button" className="slot" aria-label={`Tambah ${relLabel(rel, dg)}`} onClick={() => onAdd(rel, parent)}>
       <Plus className="size-5" aria-hidden />
       <span>{text}</span>
     </button>
@@ -63,7 +65,16 @@ export function Tree({ data, result, net, sel, onSelect, onAdd }: Props) {
     </button>
   );
   const spouses = of('spouse');
-  const kids = (rel: Rel) => [...of(rel).map((p) => <div className="kid" key={p.id}>{node(p)}</div>), <div className="kid" key="add">{slot(rel)}</div>];
+  const grandkids = of('grandchild');
+  const orphans = grandkids.filter((p) => !eligible(p, data.people));
+  const branch = (son: Person) => (
+    <div className="branch">
+      <div className="kids">
+        {grandkids.filter((g) => g.parent === son.id).map((g) => <div className="kid" key={g.id}>{node(g)}</div>)}
+        <div className="kid" key="add">{slot('grandchild', 'Cucu', son.id)}</div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="tree">
@@ -74,14 +85,24 @@ export function Tree({ data, result, net, sel, onSelect, onAdd }: Props) {
       </div>
       <div className="gen mid" role="group" aria-label="Pewaris, pasangan, dan saudara">
         <div className="sibs">{[...of('full', 'paternal', 'maternal').map(node), slot('full', 'Saudara')]}</div>
-        {me}
+        <div className="self">{me}</div>
         <div className="spouses">
           {spouses.map(node)}
           {spouses.length < relMax('spouse', dg) && slot('spouse')}
         </div>
       </div>
-      <div className="gen down" role="group" aria-label="Anak"><div className="kids">{kids('child')}</div></div>
-      <div className="gen down" role="group" aria-label="Cucu dari anak laki-laki"><div className="kids">{kids('grandchild')}</div></div>
+      <div className="gen down" role="group" aria-label="Anak dan cucu">
+        <div className="kids">
+          {of('child').map((p) => <div className="kid" key={p.id}>{node(p)}{p.g === 'm' && branch(p)}</div>)}
+          <div className="kid" key="add">{slot('child')}</div>
+        </div>
+      </div>
+      {orphans.length > 0 && (
+        <div className="mt-8" role="group" aria-label="Cucu belum terhubung">
+          <p className="mb-3 text-center text-sm text-muted-foreground">Cucu ini belum terhubung ke anak laki-laki. Pilih orang tuanya.</p>
+          <div className="kids">{orphans.map(node)}</div>
+        </div>
+      )}
     </div>
   );
 }
