@@ -3,3 +3,4 @@
 *.png
 node_modules/
 dist/
+!public/og.png

@@ -1,0 +1,61 @@
+<!-- 1200x630 OG image. Render: npm run og (headless Chrome, fonts load from Google Fonts) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <style>@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@500;600&amp;family=Newsreader:opsz,wght@6..72,600&amp;display=block");</style>
+    <radialGradient id="glow" cx="0.85" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#245a45"/>
+      <stop offset="1" stop-color="#173b2e"/>
+    </radialGradient>
+    <g id="person">
+      <circle cx="0" cy="-9" r="11"/>
+      <path d="M-20 26a20 20 0 0 1 40 0z"/>
+    </g>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- left: hook -->
+  <text x="72" y="104" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="22" letter-spacing="3" fill="#d9a441">KALKULATOR FARAID · GRATIS</text>
+  <text font-family="Newsreader" font-weight="600" font-size="76" fill="#f8f4ea">
+    <tspan x="72" y="200">Berapa bagian</tspan>
+    <tspan x="72" y="284">waris keluarga</tspan>
+    <tspan x="72" y="368" fill="#d9a441">Anda?</tspan>
+  </text>
+  <rect x="72" y="400" width="64" height="4" fill="#d9a441"/>
+  <text font-family="Atkinson Hyperlegible Next" font-weight="500" font-size="28" fill="#f8f4ea" fill-opacity="0.85">
+    <tspan x="72" y="460">Susun pohon keluarga dengan foto,</tspan>
+    <tspan x="72" y="498">lihat pembagiannya seketika.</tspan>
+  </text>
+  <text x="72" y="574" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="24" fill="#d9a441">ryanaidilp.github.io/warisan</text>
+
+  <!-- right: example card -->
+  <rect x="660" y="72" width="468" height="486" rx="28" fill="#f8f4ea"/>
+  <text x="894" y="126" text-anchor="middle" font-family="Atkinson Hyperlegible Next" font-weight="500" font-size="20" fill="#5d6e64">Contoh pembagian harta</text>
+
+  <!-- links -->
+  <g stroke="#173b2e" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M838 220H950"/>
+    <path d="M894 220V330M780 330H1008M780 330V382M1008 330V382"/>
+  </g>
+
+  <!-- deceased -->
+  <circle cx="800" cy="220" r="38" fill="#c9d1cc" stroke="#173b2e" stroke-width="3" stroke-dasharray="6 6"/>
+  <use href="#person" x="800" y="220" fill="#173b2e" fill-opacity="0.55"/>
+  <text x="800" y="284" text-anchor="middle" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="20" fill="#173b2e">Almarhum</text>
+
+  <!-- wife -->
+  <circle cx="988" cy="220" r="38" fill="#173b2e"/>
+  <use href="#person" x="988" y="220" fill="#f8f4ea"/>
+  <text x="988" y="284" text-anchor="middle" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="20" fill="#173b2e">Istri</text>
+  <text x="988" y="318" text-anchor="middle" font-family="Newsreader" font-weight="600" font-size="38" fill="#a87a1e">1/8</text>
+
+  <!-- children -->
+  <circle cx="780" cy="420" r="38" fill="#173b2e"/>
+  <use href="#person" x="780" y="420" fill="#f8f4ea"/>
+  <text x="780" y="484" text-anchor="middle" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="20" fill="#173b2e">Anak laki-laki</text>
+  <text x="780" y="526" text-anchor="middle" font-family="Newsreader" font-weight="600" font-size="38" fill="#a87a1e">7/12</text>
+
+  <circle cx="1008" cy="420" r="38" fill="#173b2e"/>
+  <use href="#person" x="1008" y="420" fill="#f8f4ea"/>
+  <text x="1008" y="484" text-anchor="middle" font-family="Atkinson Hyperlegible Next" font-weight="600" font-size="20" fill="#173b2e">Anak perempuan</text>
+  <text x="1008" y="526" text-anchor="middle" font-family="Newsreader" font-weight="600" font-size="38" fill="#a87a1e">7/24</text>
+</svg>
